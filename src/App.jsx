@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Notes from './pages/Notes'
 import Tools from './pages/Tools'
 import Blog from './pages/Blog'
+import AIChat from './pages/AIChat' // New AI Chat page
 import './styles/global.css'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/notes" element={<Notes />} />
             <Route path="/tools" element={<Tools />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/ai-chat" element={<AIChat />} /> {/* New route */}
           </Routes>
         </main>
         <Footer />
