@@ -1,8 +1,4 @@
 {
-  "functions": {
-    "api/ai-content.js": {},
-    "api/ai-chat.js": {}
-  },
   "rewrites": [
     {
       "source": "/api/:path*",
