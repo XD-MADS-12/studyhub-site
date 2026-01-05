@@ -1,22 +1,9 @@
 import React from 'react'
 
-const ResourceCard = ({ title, description, link, type }) => {
-  const getIcon = () => {
-    switch (type) {
-      case 'note':
-        return '📚'
-      case 'tool':
-        return '🛠️'
-      case 'blog':
-        return '📝'
-      default:
-        return '📄'
-    }
-  }
-
+const ResourceCard = ({ title, description, link, type, icon }) => {
   return (
     <div className="resource-card">
-      <div className="card-icon">{getIcon()}</div>
+      <div className="card-icon">{icon || '📄'}</div>
       <h3 className="card-title">{title}</h3>
       <p className="card-description">{description}</p>
       <a
