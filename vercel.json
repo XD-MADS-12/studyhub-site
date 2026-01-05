@@ -1,11 +1,7 @@
 {
   "functions": {
-    "api/ai-content.js": {
-      "runtime": "@vercel/node@1.0.0"
-    },
-    "api/ai-chat.js": {
-      "runtime": "@vercel/node@1.0.0"
-    }
+    "api/ai-content.js": {},
+    "api/ai-chat.js": {}
   },
   "rewrites": [
     {
