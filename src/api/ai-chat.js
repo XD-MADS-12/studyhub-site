@@ -3,7 +3,10 @@ export default async function handler(req, res) {
   const AI_API_KEY = process.env.AI_API_KEY;
   
   if (!AI_API_KEY) {
-    return res.status(500).json({ error: 'AI API key not configured' });
+    return res.status(500).json({ 
+      error: 'AI API key not configured', 
+      details: 'Please set the AI_API_KEY environment variable in Vercel dashboard'
+    });
   }
 
   if (req.method !== 'POST') {
@@ -50,7 +53,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(`AI API error: ${errorData.error?.message || 'Unknown error'}`);
+      throw new Error(`OpenAI API error: ${errorData.error?.message || 'Unknown error'}`);
     }
 
     const data = await response.json();
@@ -64,7 +67,16 @@ export default async function handler(req, res) {
     console.error('AI Chat Error:', error);
     res.status(500).json({ 
       error: 'Failed to process message', 
-      details: error.message 
+      details: error.message,
+      fallback: getFallbackResponse(message, language)
     });
   }
-      }
+}
+
+function getFallbackResponse(message, language) {
+  if (language === 'bangla') {
+    return "দুর্ভাগ্যক্রমে আমি এখন সঠিকভাবে উত্তর দিতে পারছি না। আপনি কি অন্য একটি প্রশ্ন করতে চান? আমি আপনাকে সাহায্য করতে প্রস্তুত আছি!";
+  } else {
+    return "I'm sorry I couldn't answer your question right now. Could you please ask another question? I'm here to help you!";
+  }
+}
