@@ -1,0 +1,16 @@
+{
+  "functions": {
+    "api/ai-content.js": {
+      "runtime": "nodejs18.x"
+    },
+    "api/ai-chat.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    }
+  ]
+}
