@@ -64,7 +64,7 @@ const AIChat = () => {
       const errorMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: 'I apologize for the technical difficulty. I\'m having trouble connecting to my knowledge base right now. Please try asking your question again, or try one of these suggestions below.',
         timestamp: new Date()
       }
       setMessages(prev => [...prev, errorMessage])
