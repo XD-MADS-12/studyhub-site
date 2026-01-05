@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Home = () => {
   return (
@@ -12,29 +13,32 @@ const Home = () => {
       </div>
       
       <div className="card-grid">
-        <div className="resource-card">
+        {/* Quality Notes Section - Links to Notes Page */}
+        <Link to="/notes" className="resource-card">
           <div className="card-icon">📚</div>
           <h3 className="card-title">Quality Notes</h3>
           <p className="card-description">
             Curated notes by subject experts covering entire syllabus
           </p>
-        </div>
+        </Link>
         
-        <div className="resource-card">
+        {/* Smart Tools Section - Links to Tools Page */}
+        <Link to="/tools" className="resource-card">
           <div className="card-icon">🛠️</div>
           <h3 className="card-title">Smart Tools</h3>
           <p className="card-description">
             Study planners, calculators, and converters to optimize learning
           </p>
-        </div>
+        </Link>
         
-        <div className="resource-card">
+        {/* Study Tips Section - Links to Blog Page */}
+        <Link to="/blog" className="resource-card">
           <div className="card-icon">💡</div>
           <h3 className="card-title">Study Tips</h3>
           <p className="card-description">
             Expert advice and strategies for effective exam preparation
           </p>
-        </div>
+        </Link>
       </div>
     </div>
   )
