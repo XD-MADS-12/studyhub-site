@@ -15,15 +15,15 @@ const ResourceCard = ({ title, description, link, type }) => {
   }
 
   return (
-    <div className="bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-700">
-      <div className="text-3xl mb-4">{getIcon()}</div>
-      <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
-      <p className="text-gray-400 mb-4">{description}</p>
+    <div className="resource-card">
+      <div className="card-icon">{getIcon()}</div>
+      <h3 className="card-title">{title}</h3>
+      <p className="card-description">{description}</p>
       <a
         href={link}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300"
+        className="btn"
       >
         {type === 'note' ? 'Download PDF' : 'Access Tool'}
       </a>
