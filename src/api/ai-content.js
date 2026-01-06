@@ -1,17 +1,23 @@
-// This runs on Vercel's server, keeping your API key secure
-export default async function handler(req, res) {
-  const AI_API_KEY = process.env.AI_API_KEY;
-  
-  if (!AI_API_KEY) {
-    return res.status(500).json({ error: 'AI API key not configured' });
-  }
+import { generateObject } from 'ai';
+import { createOpenAI } from '@ai-sdk/openai';
+import { z } from 'zod';
 
+// Create OpenAI provider using Vercel AI Gateway
+const openai = createOpenAI({
+  apiKey: process.env.AI_API_KEY,
+});
+
+export const config = {
+  runtime: 'edge',
+};
+
+export default async function handler(req) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response('Method not allowed', { status: 405 });
   }
 
   try {
-    const { topic, subject, type = 'study guide', language = 'english' } = req.body;
+    const { topic, subject, type = 'study guide', language = 'english' } = await req.json();
 
     // Add language instruction to the prompt
     const languageInstruction = language === 'bangla' 
@@ -26,49 +32,35 @@ export default async function handler(req, res) {
     5. Practice questions for self-assessment
     Format as markdown with clear sections.`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${AI_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'gpt-3.5-turbo',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an expert educational content creator. Generate high-quality study materials for students. If requested in Bangla, respond in Bangla.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        max_tokens: 1000,
-        temperature: 0.7
-      })
+    const result = await generateObject({
+      model: openai('gpt-3.5-turbo'),
+      schema: z.object({
+        title: z.string(),
+        content: z.string(),
+        keyPoints: z.array(z.string()),
+        examples: z.array(z.string()),
+        practiceQuestions: z.array(z.string())
+      }),
+      prompt: prompt
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`AI API error: ${errorData.error?.message || 'Unknown error'}`);
-    }
-
-    const data = await response.json();
-    const content = data.choices[0].message.content;
-    
-    res.status(200).json({
-      content: content,
+    return new Response(JSON.stringify({
+      content: result.object.content,
       topic: topic,
       subject: subject,
       language: language,
       generatedAt: new Date().toISOString()
+    }), {
+      headers: { 'Content-Type': 'application/json' }
     });
   } catch (error) {
-    console.error('AI Error:', error);
-    res.status(500).json({ 
-      error: 'Failed to generate content', 
+    console.error('AI Content Error:', error);
+    return new Response(JSON.stringify({ 
+      error: 'Failed to generate content',
       details: error.message 
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
     });
   }
       }
